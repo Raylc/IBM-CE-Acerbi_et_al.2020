@@ -41,6 +41,15 @@ unbiased_mutation <- function(N, mu, p_0, t_max, r_max) {
   output 
 }
 
+plot_multiple_runs <- function(data_model) {
+  ggplot(data = data_model, aes(y = p, x = generation)) +
+    geom_line(aes(colour = run)) +
+    stat_summary(fun = mean, geom = "line", size = 1) +
+    ylim(c(0, 1)) +
+    theme_bw() +
+    labs(y = "p (proportion of individuals with trait A)")
+}
+
 # Model testing. The key thing is that unbiased mutation applied individually
 # so regardless of initial trait distribution it will converge to 0.5.
 data_model <- unbiased_mutation(N = 100, mu = 0.05, p_0 = 0.5, t_max = 200, r_max = 5)
@@ -84,6 +93,14 @@ biased_mutation <- function(N, mu_b, p_0, t_max, r_max) {
   output 
 }
 
+plot_multiple_runs <- function(data_model) {
+  ggplot(data = data_model, aes(y = p, x = generation)) +
+    geom_line(aes(colour = run)) +
+    stat_summary(fun = mean, geom = "line", size = 1) +
+    ylim(c(0, 1)) +
+    theme_bw() +
+    labs(y = "p (proportion of individuals with trait A)")
+}
 
 data_model <- biased_mutation(N = 100, mu_b = 0.05, p_0 = 0, t_max = 200, r_max = 5)
 plot_multiple_runs(data_model)
