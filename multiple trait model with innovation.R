@@ -1,3 +1,5 @@
+library(tidyverse)
+
 multiple_traits_matrix <- function(N, t_max, mu) {
   
   max_traits <- N + N * mu * t_max
@@ -54,3 +56,19 @@ ggsave("multiple trait model with innovation 1.png", width = 20, height = 15, un
 data_model <- multiple_traits_matrix(N = 100, t_max = 1000, mu = 0.01)
 plot_multiple_traits_matrix(data_model)
 ggsave("multiple trait model with innovation 2.png", width = 20, height = 15, units = "cm")
+
+data_model <- multiple_traits_matrix(N = 10000, t_max = 100, mu = 0.01)
+plot_multiple_traits_matrix(data_model)
+ggsave("multiple trait model with innovation 3.png", width = 20, height = 15, units = "cm")
+
+cumulative <- colSums(data_model) * 100
+cumulative <- cumulative[cumulative > 0]
+data_to_plot <- tibble(cumulative = sort(cumulative, decreasing = TRUE))
+
+ggplot(data = data_to_plot, aes(x = seq_along(cumulative), y = cumulative)) +
+  geom_point() +
+  theme_bw() +
+  labs(x = "trait sorted by decreasing popularity", y = "cumulative popularity")
+
+ggsave("multiple trait model with innovation popularity 3.png", width = 20, height = 15, units = "cm")
+
